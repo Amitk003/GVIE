@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: GVIE base network placeholders for later infra work
+
+Resources:
+  GvieLogBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub gvie-logs-${AWS::AccountId}-${AWS::Region}

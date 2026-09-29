@@ -1,0 +1,24 @@
+{
+  "name": "gvie",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GeoVeri Impact Engine: verified field proof with Cloudinary",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/telemetry"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

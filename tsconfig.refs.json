@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "./apps/api" },
+    { "path": "./packages/schemas" },
+    { "path": "./packages/cloudinary" },
+    { "path": "./services/telemetry" }
+  ],
+  "files": []
+}

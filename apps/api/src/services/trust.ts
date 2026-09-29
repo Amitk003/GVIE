@@ -9,6 +9,9 @@ export type TrustInput = {
   gpsDriftMeters?: number | null;
 };
 
+/**
+ * Used when the server itself has verified the seal.
+ */
 export function statusFromTrust(input: TrustInput): VeriStatus {
   if (!input.c2paValid) return 'Failed_C2PA';
   const drift = input.gpsDriftMeters;
@@ -17,6 +20,25 @@ export function statusFromTrust(input: TrustInput): VeriStatus {
   }
   return 'Pending_AI';
 }
+
+/**
+ * Used at upload time. The client only reads the seal, so we never trust it.
+ * A claim of "seal is broken" is accepted at once because there is nothing to gain
+ * by keeping a known bad file. A claim of "seal is fine" stays unverified until the
+ * server checks the manifest itself.
+ */
+export function initialStatusFromClaim(input: {
+  c2paClaimedValid: boolean;
+  gpsDriftMeters?: number | null;
+}): VeriStatus {
+  if (!input.c2paClaimedValid) return 'Failed_C2PA';
+  const drift = input.gpsDriftMeters;
+  if (typeof drift === 'number' && Number.isFinite(drift) && drift > GPS_DRIFT_LIMIT_M) {
+    return 'Flagged_Location';
+  }
+  return 'Pending_AI';
+}
+
 
 export function canPromoteToVerified(input: {
   status: VeriStatus;

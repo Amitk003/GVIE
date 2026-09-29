@@ -3,6 +3,7 @@ import {
   GPS_DRIFT_LIMIT_M,
   canPromoteToVerified,
   haversineMeters,
+  initialStatusFromClaim,
   statusFromTrust,
 } from './trust.js';
 
@@ -23,6 +24,22 @@ describe('trust status', () => {
   it('treats the drift limit as inside range', () => {
     expect(statusFromTrust({ c2paValid: true, gpsDriftMeters: GPS_DRIFT_LIMIT_M })).toBe(
       'Pending_AI',
+    );
+  });
+});
+
+describe('status from claim at upload time', () => {
+  it('accepts a reported broken seal', () => {
+    expect(initialStatusFromClaim({ c2paClaimedValid: false })).toBe('Failed_C2PA');
+  });
+
+  it('keeps a good claim pending until the server checks', () => {
+    expect(initialStatusFromClaim({ c2paClaimedValid: true })).toBe('Pending_AI');
+  });
+
+  it('flags far gps drift', () => {
+    expect(initialStatusFromClaim({ c2paClaimedValid: true, gpsDriftMeters: 800 })).toBe(
+      'Flagged_Location',
     );
   });
 });

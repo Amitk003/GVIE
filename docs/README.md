@@ -9,7 +9,8 @@ Simple guides for GVIE. Read in this order.
 5. `align-service.md` how before and after photos line up
 6. `telemetry.md` how AI reads numbers from photos
 7. `video.md` how reels are built with URLs
-8. `security.md` how we keep proof safe
-9. `operations.md` how to run in production
-10. `roadmap.md` what is done and what is next
-11. `glossary.md` plain word meanings
+8. `web.md` the field screen and the reviewer screen
+9. `security.md` how we keep proof safe
+10. `operations.md` how to run in production
+11. `roadmap.md` what is done and what is next
+12. `glossary.md` plain word meanings

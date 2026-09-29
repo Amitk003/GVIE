@@ -30,7 +30,7 @@ describe('metadata param', () => {
     const plan = buildUploadPlan({ config, payload: basePayload, now: fixedNow });
     const text = encodeMetadataParam(plan.metadata);
     expect(text).toContain('proj_id=WATER-01');
-    expect(text).toContain('c2pa_valid=true');
+    expect(text).toContain('c2pa_valid=false');
     expect(text).toContain('tempo_phase=Outcome_After');
     expect(text.split('|').length).toBe(6);
   });
@@ -61,13 +61,22 @@ describe('upload plan', () => {
     expect(plan.publicId).toBe('gvie/WATER-01/custom_1');
   });
 
-  it('marks a failed seal as Failed_C2PA', () => {
+  it('keeps seal unverified even when the client says it is fine', () => {
+    const plan = buildUploadPlan({ config, payload: basePayload, now: fixedNow });
+    expect(plan.metadata.c2pa_valid).toBe(false);
+    expect(plan.metadata.veri_status).toBe('Pending_AI');
+    expect(plan.params.context).toContain('c2pa_claimed=true');
+  });
+
+  it('trusts a client report of a broken seal', () => {
     const plan = buildUploadPlan({
       config,
       payload: { ...basePayload, c2pa_valid: false },
       now: fixedNow,
     });
+    expect(plan.metadata.c2pa_valid).toBe(false);
     expect(plan.metadata.veri_status).toBe('Failed_C2PA');
+    expect(plan.params.context).toContain('c2pa_claimed=false');
   });
 
   it('flags large gps drift', () => {
@@ -79,9 +88,10 @@ describe('upload plan', () => {
     expect(plan.metadata.veri_status).toBe('Flagged_Location');
   });
 
-  it('put hash in context and preset in params', () => {
+  it('put hash and claim in context and preset in params', () => {
     const plan = buildUploadPlan({ config, payload: basePayload, now: fixedNow });
     expect(plan.params.context).toContain(`sha256=${'a'.repeat(64)}`);
+    expect(plan.params.context).toContain('c2pa_claimed=true');
     expect(plan.params.upload_preset).toBe('gvie_signed');
     expect(plan.params.metadata).toContain('proj_id=WATER-01');
   });

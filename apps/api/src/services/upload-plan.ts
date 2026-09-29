@@ -9,7 +9,7 @@ import {
 import { defaultMetadataForUpload, type AssetMetadata } from '@gvie/schemas';
 import type { ApiConfig } from '../config.js';
 import { assetFolder } from '../config.js';
-import { statusFromTrust } from './trust.js';
+import { initialStatusFromClaim } from './trust.js';
 
 export const uploadSignInputSchema = z.object({
   proj_id: projectIdSchema,
@@ -72,22 +72,29 @@ export function buildUploadPlan(input: {
     tempo_phase: payload.tempo_phase,
     base_asset_id: payload.base_asset_id ?? null,
   });
-  metadata.veri_status = statusFromTrust({
-    c2paValid: payload.c2pa_valid,
+  // Fail closed. The client only reads the seal. The server verify step is the
+  // only place that may set c2pa_valid to true.
+  metadata.c2pa_valid = false;
+  metadata.veri_status = initialStatusFromClaim({
+    c2paClaimedValid: payload.c2pa_valid,
     gpsDriftMeters: payload.gps_drift_meters ?? null,
   });
+
+  const contextPairs = [
+    `sha256=${payload.sha256}`,
+    `c2pa_claimed=${payload.c2pa_valid ? 'true' : 'false'}`,
+  ];
+  if (payload.client_captured_at) {
+    contextPairs.push(`captured_at=${payload.client_captured_at}`);
+  }
 
   const params: Record<string, string> = {
     public_id: publicId,
     folder,
     upload_preset: config.CLOUDINARY_UPLOAD_PRESET,
     metadata: encodeMetadataParam(metadata),
+    context: contextPairs.join('|'),
   };
-  if (payload.client_captured_at) {
-    params.context = `captured_at=${payload.client_captured_at}|sha256=${payload.sha256}`;
-  } else {
-    params.context = `sha256=${payload.sha256}`;
-  }
 
   return { publicId, folder, metadata, params };
 }

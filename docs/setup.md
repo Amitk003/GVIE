@@ -37,14 +37,20 @@ cp .env.example .env
 
 ```bash
 npm install
-pip install -r services/align/requirements.txt
+pip install -r services/align/requirements-dev.txt
 ```
 
-5. Make Cloudinary metadata fields
+5. Make the Cloudinary metadata fields
+
+This is the step people forget. Without these fields there is nowhere to put the
+numbers. See it first with a dry run.
 
 ```bash
-npm run metadata:apply --workspace=packages/schemas
+npm run metadata:apply --workspace @gvie/schemas -- --dry-run
+npm run metadata:apply --workspace @gvie/schemas
 ```
+
+Running it twice is safe. It keeps whatever is already there.
 
 6. Start all apps
 
@@ -55,9 +61,20 @@ npm run dev
 ## Check it works
 
 - Web: http://localhost:3000
-- API docs: http://localhost:4000/docs
+- API health: http://localhost:4000/health
 - Align health: http://localhost:5001/health
-- Upload a test photo and see `veri_status` set to Pending_AI or Verified.
+- Upload a test photo and see `veri_status` set to `Pending_AI`
+
+## Check the build is clean
+
+```bash
+npm run test --workspaces --if-present
+npm run lint
+npm run format:check
+cd services/align && python -m pytest
+```
+
+The same commands run on every pull request through `.github/workflows/checks.yml`.
 
 ## Common issues
 

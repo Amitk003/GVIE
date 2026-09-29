@@ -11,6 +11,6 @@ Simple guides for GVIE. Read in this order.
 7. `video.md` how reels are built with URLs
 8. `web.md` the field screen and the reviewer screen
 9. `security.md` how we keep proof safe
-10. `operations.md` how to run in production
+10. `operations.md` setting up an account and running it for real
 11. `roadmap.md` what is done and what is next
 12. `glossary.md` plain word meanings

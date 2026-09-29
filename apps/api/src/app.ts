@@ -10,8 +10,7 @@ import { webhookRoutes } from './routes/webhooks.js';
 
 export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
   const app = Fastify({
-    logger: deps.config.NODE_ENV !== 'test',
-    disableRequestLogging: deps.config.NODE_ENV === 'test',
+    logger: deps.config.NODE_ENV === 'test' ? false : { level: 'info' },
   });
 
   app.addContentTypeParser(

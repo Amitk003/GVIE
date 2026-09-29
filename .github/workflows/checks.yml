@@ -1,0 +1,94 @@
+# Build checks that must pass before anything is merged.
+#
+# Plain words: we run the same checks on every pull request that we run on our
+# own machine. If the tests, the type check, or the formatting is off, the
+# request cannot go in.
+
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typescript:
+    name: typescript tests and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: install
+        run: npm ci
+
+      - name: test
+        run: npm run test --workspaces --if-present
+
+      - name: typecheck api
+        run: npx tsc --noEmit -p apps/api/tsconfig.json
+
+      - name: typecheck web
+        run: npx tsc --noEmit -p apps/web/tsconfig.json
+
+      - name: typecheck telemetry
+        run: npx tsc --noEmit -p services/telemetry/tsconfig.json
+
+      - name: typecheck cloudinary package
+        run: npx tsc --noEmit -p packages/cloudinary/tsconfig.json
+
+      - name: typecheck schemas package
+        run: npx tsc --noEmit -p packages/schemas/tsconfig.json
+
+  python:
+    name: python align tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/align
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: services/align/requirements-dev.txt
+
+      - name: install
+        run: pip install -r requirements-dev.txt
+
+      - name: test
+        run: python -m pytest
+
+  quality:
+    name: lint and format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: install
+        run: npm ci
+
+      - name: lint
+        run: npm run lint
+
+      - name: check formatting
+        run: npm run format:check

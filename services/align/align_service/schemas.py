@@ -17,6 +17,7 @@ class AlignRequest(BaseModel):
     public_id: str = Field(min_length=1)
     aligned_public_id: Optional[str] = None
     output_format: str = Field(default="jpg", pattern="^(jpg|png|webp)$")
+    return_image: bool = False
 
 
 class AlignMetrics(BaseModel):
@@ -37,7 +38,8 @@ class AlignResponse(BaseModel):
     status: AlignStatus
     public_id: str
     aligned_public_id: Optional[str] = None
-    aligned_url: Optional[str] = None
     reason: Optional[str] = None
     homography: Optional[list[list[float]]] = None
+    elapsed_ms: Optional[float] = None
+    aligned_image_base64: Optional[str] = None
     metrics: AlignMetrics = Field(default_factory=AlignMetrics)

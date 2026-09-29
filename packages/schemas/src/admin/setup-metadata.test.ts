@@ -17,9 +17,11 @@ describe('build plan', () => {
 
   it('creates the lists before the fields', () => {
     const plan = buildPlan(noExisting);
-    const lastList = plan.findLastIndex((a) => a.kind === 'datasource');
-    const firstField = plan.findIndex((a) => a.kind === 'field');
-    expect(lastList).toBeLessThan(firstField);
+    const listIndexes = plan
+      .map((action, index) => (action.kind === 'datasource' ? index : -1))
+      .filter((index) => index >= 0);
+    const firstField = plan.findIndex((action) => action.kind === 'field');
+    expect(Math.max(...listIndexes)).toBeLessThan(firstField);
   });
 
   it('names every field we promised', () => {

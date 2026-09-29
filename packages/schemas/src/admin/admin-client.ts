@@ -76,7 +76,7 @@ export function createAdminClient(
 export type RunResult = {
   created: number;
   skipped: number;
-  lines: string[];
+  total: number;
 };
 
 export async function applyPlan(
@@ -108,5 +108,5 @@ export async function applyPlan(
     onLine(`kept         ${action.external_id} (${action.why})`);
   }
 
-  return { created, skipped, lines: plan.length };
+  return { created, skipped, total: plan.length };
 }

@@ -1,0 +1,39 @@
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Env and secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Cloudinary and local uploads
+uploads/
+*.log
+
+# Private working memory (local only, never push)
+memory/
+
+# Keep the source blueprint PDF local too
+AI Sustainability Platform Architecture.pdf

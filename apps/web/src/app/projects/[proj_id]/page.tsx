@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ProjectSummary } from '../../../components/ProjectSummary';
-import { readApiBase, searchAssets } from '../../../lib/api';
+import { readApiBase, searchAssets, type AssetSummary } from '../../../lib/api';
 
 export const metadata: Metadata = {
   title: 'GVIE: project proof',
@@ -24,7 +24,7 @@ export default async function ProjectPage({
   const projId = params.proj_id ?? '';
   const apiBase = readApiBase();
 
-  let assets = [];
+  let assets: AssetSummary[] = [];
   let problem: string | null = null;
   try {
     assets = await searchAssets(apiBase, { projId, max: 50 });

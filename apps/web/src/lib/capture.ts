@@ -105,13 +105,13 @@ export function haversineMeters(
  * The badge a field worker sees. We never promise Verified here. This is only
  * what the phone could read on its own.
  */
-export type TrustBadge = {
+export type TrustBadgeInfo = {
   label: string;
   tone: 'good' | 'warn' | 'bad';
   detail: string;
 };
 
-export function badgeForSeal(claim: SealClaim | null): TrustBadge {
+export function badgeForSeal(claim: SealClaim | null): TrustBadgeInfo {
   if (!claim) {
     return { label: 'Not checked', tone: 'warn', detail: 'we could not look inside this file' };
   }

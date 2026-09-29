@@ -9,8 +9,8 @@
 'use client';
 
 import { useState } from 'react';
-import { badgeForSeal, prepareCapture, type TrustBadge } from '../lib/capture';
-import { TrustBadge } from './TrustBadge';
+import { TrustBadge as TrustBadgeComponent, type TrustBadgeProps } from './TrustBadge';
+import { badgeForSeal, prepareCapture } from '../lib/capture';
 
 const TEMPO_PHASES = ['Baseline_Before', 'Interim_Work', 'Outcome_After'] as const;
 
@@ -23,7 +23,7 @@ export function CaptureForm({ onSend }: Props) {
   const [geoCoords, setGeoCoords] = useState('');
   const [tempoPhase, setTempoPhase] = useState<(typeof TEMPO_PHASES)[number]>('Baseline_Before');
   const [baseAssetId, setBaseAssetId] = useState('');
-  const [badge, setBadge] = useState<TrustBadge | null>(null);
+  const [badge, setBadge] = useState<TrustBadgeProps | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -125,7 +125,7 @@ export function CaptureForm({ onSend }: Props) {
         />
       </label>
 
-      {badge ? <TrustBadge {...badge} /> : null}
+      {badge ? <TrustBadgeComponent {...badge} /> : null}
 
       {errors.length > 0 ? (
         <ul data-testid="capture-errors" style={{ color: '#a52020', margin: 0, paddingLeft: '18px' }}>

@@ -4,9 +4,9 @@ Simple plan for GVIE. Small steps, each one works alone.
 
 ## Done now
 
-* Repo setup with docs and env example
-* Shared schemas for metadata and AI output
-* Cloudinary helper for sign, verify, and URLs
+- Repo setup with docs and env example
+- Shared schemas for metadata and AI output
+- Cloudinary helper for sign, verify, and URLs
 
 ## Next
 
@@ -18,9 +18,9 @@ Simple plan for GVIE. Small steps, each one works alone.
 
 ## Later
 
-* Offline first field app
-* Satellite check and drone lane
-* Multi team accounts and SSO
-* Public verified portal
+- Offline first field app
+- Satellite check and drone lane
+- Multi team accounts and SSO
+- Public verified portal
 
 We ship in thin slices. Each branch adds one slice with tests.

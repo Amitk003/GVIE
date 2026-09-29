@@ -21,7 +21,13 @@ export type CloudinaryAdminEnv = {
 
 export type PlanAction =
   | { kind: 'datasource'; external_id: string; values: readonly string[] }
-  | { kind: 'field'; external_id: string; type: string; label: string; extra: Record<string, unknown> }
+  | {
+      kind: 'field';
+      external_id: string;
+      type: string;
+      label: string;
+      extra: Record<string, unknown>;
+    }
   | { kind: 'skip'; external_id: string; why: string };
 
 export type ExistingField = { external_id: string; type?: string };
@@ -64,10 +70,7 @@ export function buildPlan(input: {
  * Turn our field name into the rules Cloudinary expects. The rules are the whole
  * point: a bad pin or a plant change of 5 must be refused at the door.
  */
-export function buildFieldRules(
-  externalId: string,
-  type: string,
-): Record<string, unknown> {
+export function buildFieldRules(externalId: string, type: string): Record<string, unknown> {
   switch (externalId) {
     case 'geo_coords':
       return { type, restrictions: { regex: METADATA_VALIDATION.geo_coords_pattern } };
@@ -85,7 +88,10 @@ export function buildFieldRules(
       return {
         type,
         restrictions: {
-          numeric: { greater_than: METADATA_VALIDATION.iqa_min, less_than: METADATA_VALIDATION.iqa_max },
+          numeric: {
+            greater_than: METADATA_VALIDATION.iqa_min,
+            less_than: METADATA_VALIDATION.iqa_max,
+          },
         },
       };
     case 'obj_count':

@@ -1,5 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { makeHarness, signSample, signWebhookBody, webhookSample, makeEnvWithoutWebhookSecret, type Harness } from './testing/harness.js';
+import {
+  makeHarness,
+  signSample,
+  signWebhookBody,
+  webhookSample,
+  makeEnvWithoutWebhookSecret,
+  type Harness,
+} from './testing/harness.js';
 
 let h: Harness;
 

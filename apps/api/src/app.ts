@@ -13,18 +13,14 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
     logger: deps.config.NODE_ENV === 'test' ? false : { level: 'info' },
   });
 
-  app.addContentTypeParser(
-    'application/json',
-    { parseAs: 'string' },
-    (request, body, done) => {
-      request.rawBody = body as string;
-      try {
-        done(null, body === '' ? {} : JSON.parse(body as string));
-      } catch {
-        done(new Error('bad json body'), undefined);
-      }
-    },
-  );
+  app.addContentTypeParser('application/json', { parseAs: 'string' }, (request, body, done) => {
+    request.rawBody = body as string;
+    try {
+      done(null, body === '' ? {} : JSON.parse(body as string));
+    } catch {
+      done(new Error('bad json body'), undefined);
+    }
+  });
 
   app.setErrorHandler((error, _request, reply) => {
     const { status, payload } = errorPayload(error);

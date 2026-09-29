@@ -17,9 +17,9 @@ It is a small Python service with FastAPI and OpenCV. It lives in
 
 ## When it refuses to align
 
-* Fewer than 15 good points
-* Middle error more than 8 pixels
-* View change more than 60 degrees
+- Fewer than 15 good points
+- Middle error more than 8 pixels
+- View change more than 60 degrees
 
 In that case the reply is `skipped` with a plain reason. We keep the raw file,
 use smart crop `g_auto` on the web side, and set an alignment warning. A wrong
@@ -47,7 +47,11 @@ uvicorn align_service.main:app --port 5001
   "status": "aligned",
   "public_id": "gvie/WATER-01/after_1",
   "aligned_public_id": "gvie/WATER-01/aligned_1",
-  "homography": [[1.0, 0.0, -5.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+  "homography": [
+    [1.0, 0.0, -5.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0]
+  ],
   "elapsed_ms": 812.4,
   "aligned_image_base64": null,
   "metrics": {
@@ -71,16 +75,16 @@ when the request body is wrong.
 
 ## Settings you can change
 
-| Name | Default | What it does |
-|---|---|---|
-| `ALIGN_MAX_FEATURES` | 4000 | how many corners to look for |
-| `ALIGN_LOWE_RATIO` | 0.75 | how strict the pairing is |
-| `ALIGN_RANSAC_THRESHOLD_PX` | 5.0 | how far a match may be off |
-| `ALIGN_MIN_INLIERS` | 15 | how many good points we insist on |
-| `ALIGN_MAX_MEDIAN_ERROR_PX` | 8.0 | when to give up on quality |
-| `ALIGN_MAX_ANGLE_DEGREES` | 60.0 | when the view is too different |
-| `ALIGN_MAX_DIMENSION_PX` | 1600 | shrink big photos before working |
-| `ALIGN_USE_ORB_FALLBACK` | true | try ORB after SIFT |
+| Name                        | Default | What it does                      |
+| --------------------------- | ------- | --------------------------------- |
+| `ALIGN_MAX_FEATURES`        | 4000    | how many corners to look for      |
+| `ALIGN_LOWE_RATIO`          | 0.75    | how strict the pairing is         |
+| `ALIGN_RANSAC_THRESHOLD_PX` | 5.0     | how far a match may be off        |
+| `ALIGN_MIN_INLIERS`         | 15      | how many good points we insist on |
+| `ALIGN_MAX_MEDIAN_ERROR_PX` | 8.0     | when to give up on quality        |
+| `ALIGN_MAX_ANGLE_DEGREES`   | 60.0    | when the view is too different    |
+| `ALIGN_MAX_DIMENSION_PX`    | 1600    | shrink big photos before working  |
+| `ALIGN_USE_ORB_FALLBACK`    | true    | try ORB after SIFT                |
 
 ## Where the numbers go
 
@@ -90,6 +94,5 @@ real and not a guess.
 
 ## URLs we build on the web side
 
-* Split view: overlay the aligned file on the right half
-* Wipe: small WebP that loops between the two frames
-
+- Split view: overlay the aligned file on the right half
+- Wipe: small WebP that loops between the two frames

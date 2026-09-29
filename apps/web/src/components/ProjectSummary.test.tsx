@@ -71,9 +71,7 @@ describe('project summary', () => {
 
   it('lists one row per photo', () => {
     render(
-      <ProjectSummary
-        assets={[makeAsset(), makeAsset({ publicId: 'gvie/WATER-01/after_2' })]}
-      />,
+      <ProjectSummary assets={[makeAsset(), makeAsset({ publicId: 'gvie/WATER-01/after_2' })]} />,
     );
     expect(screen.getAllByTestId('asset-row')).toHaveLength(2);
   });

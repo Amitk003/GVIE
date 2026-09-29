@@ -6,11 +6,11 @@ GeoVeri Impact Engine (GVIE) helps teams prove real work on the ground. It takes
 
 ## Why teams pick GVIE
 
-* **Real proof, not claims.** Each file keeps its camera data, location, hash, and signature. If a file is edited or fake, the system flags it.
-* **Before and after that line up.** Our vision service warps the new photo to match the old camera view, so change is clear even when staff stand in a new spot.
-* **Numbers, not tags.** Instead of tags like tree or outdoor, you get typed facts: how many units, what status, what score, how sure the AI is.
-* **Video in one click.** No editing app needed. GVIE joins clips with Cloudinary URLs into reels and wipes.
-* **Search that works.** Find by project, place, date, status, or look alike images with plain words.
+- **Real proof, not claims.** Each file keeps its camera data, location, hash, and signature. If a file is edited or fake, the system flags it.
+- **Before and after that line up.** Our vision service warps the new photo to match the old camera view, so change is clear even when staff stand in a new spot.
+- **Numbers, not tags.** Instead of tags like tree or outdoor, you get typed facts: how many units, what status, what score, how sure the AI is.
+- **Video in one click.** No editing app needed. GVIE joins clips with Cloudinary URLs into reels and wipes.
+- **Search that works.** Find by project, place, date, status, or look alike images with plain words.
 
 ## How it works
 
@@ -22,14 +22,14 @@ GeoVeri Impact Engine (GVIE) helps teams prove real work on the ground. It takes
 
 ## What is inside this repo
 
-* `apps/web` Next.js dashboard and field upload flow
-* `apps/api` Fastify API for ingest, webhooks, search proxy, export
-* `services/align` Python FastAPI microservice with OpenCV SIFT and homography
-* `services/telemetry` Worker for Analyze API v2 with JSON schema checks
-* `packages/schemas` Shared Zod and JSON schemas plus Cloudinary metadata DDL
-* `packages/cloudinary` Signed upload, webhook verify, transform URL helpers
-* `infra` Terraform for AWS plus Cloudinary setup scripts
-* `docs` Simple guides for setup, design, API, and daily use
+- `apps/web` Next.js dashboard and field upload flow
+- `apps/api` Fastify API for ingest, webhooks, search proxy, export
+- `services/align` Python FastAPI microservice with OpenCV SIFT and homography
+- `services/telemetry` Worker for Analyze API v2 with JSON schema checks
+- `packages/schemas` Shared Zod and JSON schemas plus Cloudinary metadata DDL
+- `packages/cloudinary` Signed upload, webhook verify, transform URL helpers
+- `infra` Terraform for AWS plus Cloudinary setup scripts
+- `docs` Simple guides for setup, design, API, and daily use
 
 ## Quick start
 
@@ -51,11 +51,11 @@ Open `http://localhost:3000` for the web app and `http://localhost:4000/docs` fo
 
 ## Core ideas in plain words
 
-* `c2pa_valid` is false until the signature check passes. No pass, no Verified tag.
-* `base_asset_id` links each after photo to its before photo.
-* `veri_status` controls what donors see: Verified, Pending_AI, Flagged_Location, Failed_C2PA.
-* `ndvi_delta`, `obj_count`, `iqa_score` hold the measured change, count, and clarity.
-* All AI output must match a fixed schema or it is retried, never saved raw.
+- `c2pa_valid` is false until the signature check passes. No pass, no Verified tag.
+- `base_asset_id` links each after photo to its before photo.
+- `veri_status` controls what donors see: Verified, Pending_AI, Flagged_Location, Failed_C2PA.
+- `ndvi_delta`, `obj_count`, `iqa_score` hold the measured change, count, and clarity.
+- All AI output must match a fixed schema or it is retried, never saved raw.
 
 ## Docs
 

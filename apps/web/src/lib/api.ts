@@ -58,11 +58,7 @@ async function readError(response: Response): Promise<ApiError> {
  * Field phones lose signal in the field. A dead network must read as a clear
  * message, not as a stack trace the worker has to decode.
  */
-async function callApi(
-  url: string,
-  init: RequestInit,
-  fetchImpl: typeof fetch,
-): Promise<unknown> {
+async function callApi(url: string, init: RequestInit, fetchImpl: typeof fetch): Promise<unknown> {
   let response: Response;
   try {
     response = await fetchImpl(url, init);

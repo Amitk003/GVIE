@@ -87,9 +87,7 @@ export function CaptureForm({ onSend }: Props) {
         Which stage is this photo
         <select
           value={tempoPhase}
-          onChange={(event) =>
-            setTempoPhase(event.target.value as (typeof TEMPO_PHASES)[number])
-          }
+          onChange={(event) => setTempoPhase(event.target.value as (typeof TEMPO_PHASES)[number])}
           style={inputStyle}
         >
           {TEMPO_PHASES.map((phase) => (
@@ -128,7 +126,10 @@ export function CaptureForm({ onSend }: Props) {
       {badge ? <TrustBadgeComponent {...badge} /> : null}
 
       {errors.length > 0 ? (
-        <ul data-testid="capture-errors" style={{ color: '#a52020', margin: 0, paddingLeft: '18px' }}>
+        <ul
+          data-testid="capture-errors"
+          style={{ color: '#a52020', margin: 0, paddingLeft: '18px' }}
+        >
           {errors.map((message) => (
             <li key={message}>{message}</li>
           ))}

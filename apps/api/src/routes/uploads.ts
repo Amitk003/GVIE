@@ -12,10 +12,7 @@ export async function uploadRoutes(app: FastifyInstance, deps: RouteDeps): Promi
     const now = deps.now ? deps.now() : new Date();
     const plan = buildUploadPlan({ config: deps.config, payload, now });
     const timestamp = Math.floor(now.getTime() / 1000);
-    const signature = signUploadParams(
-      { ...plan.params, timestamp },
-      deps.cloud.apiSecret,
-    );
+    const signature = signUploadParams({ ...plan.params, timestamp }, deps.cloud.apiSecret);
 
     return reply.code(201).send({
       cloudName: deps.cloud.cloudName,

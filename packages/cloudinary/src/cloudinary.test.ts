@@ -28,9 +28,9 @@ describe('upload sign', () => {
     const timestamp = '1720000001';
     const signature = createHmac('sha256', secret).update(`${timestamp}.${body}`).digest('hex');
     expect(verifyWebhookSignature({ body, timestamp, signature, apiSecret: secret })).toBe(true);
-    expect(
-      verifyWebhookSignature({ body, timestamp, signature: 'bad', apiSecret: secret }),
-    ).toBe(false);
+    expect(verifyWebhookSignature({ body, timestamp, signature: 'bad', apiSecret: secret })).toBe(
+      false,
+    );
   });
 });
 

@@ -52,4 +52,3 @@ export async function assetRoutes(app: FastifyInstance, deps: RouteDeps): Promis
     return reply.send({ asset: results[0] });
   });
 }
-

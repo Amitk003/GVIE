@@ -4,7 +4,12 @@
  * Everything here is injectable so the tests never touch the real account.
  */
 
-import type { CloudinaryAdminEnv, ExistingDatasource, ExistingField, PlanAction } from './setup-metadata.js';
+import type {
+  CloudinaryAdminEnv,
+  ExistingDatasource,
+  ExistingField,
+  PlanAction,
+} from './setup-metadata.js';
 
 export type AdminClient = {
   listFields(): Promise<ExistingField[]>;

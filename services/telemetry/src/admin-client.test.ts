@@ -54,7 +54,9 @@ describe('write metadata', () => {
     expect(result.ok).toBe(true);
     expect(calls[0].url).toContain('/resources/image/upload/gvie/a/b');
     expect(calls[0].method).toBe('POST');
-    expect(String((calls[0].body as { metadata: string }).metadata)).toContain('veri_status=Verified');
+    expect(String((calls[0].body as { metadata: string }).metadata)).toContain(
+      'veri_status=Verified',
+    );
   });
 
   it('reports a refused write', async () => {

@@ -46,11 +46,13 @@ export function impactReelUrl(input: {
 }): string {
   if (input.sceneIds.length === 0) throw new Error('need at least one scene');
   const [first, ...rest] = input.sceneIds;
-  const parts: string[] = ['q_auto,f_mp4', `l_text:Arial_40:${encodeText(input.title)},g_north,y_20`];
+  const parts: string[] = [
+    'q_auto,f_mp4',
+    `l_text:Arial_40:${encodeText(input.title)},g_north,y_20`,
+  ];
   for (const scene of rest) {
     parts.push(`l_video:${overlayId(scene)},fl_splice`);
   }
   parts.push(`l_text:Arial_28:${encodeText(input.place)},g_south,y_20`);
   return `https://res.cloudinary.com/${input.cloudName}/video/upload/${parts.join('/')}/${first}`;
 }
-

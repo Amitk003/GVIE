@@ -24,9 +24,9 @@ describe('seal status from the server check', () => {
   });
 
   it('treats the drift limit as inside range', () => {
-    expect(
-      statusFromVerifiedSeal({ c2paValid: true, gpsDriftMeters: GPS_DRIFT_LIMIT_M }),
-    ).toBe('Pending_AI');
+    expect(statusFromVerifiedSeal({ c2paValid: true, gpsDriftMeters: GPS_DRIFT_LIMIT_M })).toBe(
+      'Pending_AI',
+    );
   });
 });
 
@@ -58,9 +58,9 @@ describe('promotion to verified', () => {
   });
 
   it('blocks right at the confidence edge', () => {
-    expect(
-      canPromoteToVerified({ ...good, confidence: MIN_CONFIDENCE_FOR_VERIFIED - 0.01 }),
-    ).toBe(false);
+    expect(canPromoteToVerified({ ...good, confidence: MIN_CONFIDENCE_FOR_VERIFIED - 0.01 })).toBe(
+      false,
+    );
     expect(canPromoteToVerified({ ...good, confidence: MIN_CONFIDENCE_FOR_VERIFIED })).toBe(true);
   });
 
@@ -78,9 +78,9 @@ describe('promotion to verified', () => {
   });
 
   it('blocks an after photo with no baseline link', () => {
-    expect(
-      canPromoteToVerified({ ...good, tempoPhase: 'Outcome_After', baseAssetId: null }),
-    ).toBe(false);
+    expect(canPromoteToVerified({ ...good, tempoPhase: 'Outcome_After', baseAssetId: null })).toBe(
+      false,
+    );
     expect(
       canPromoteToVerified({ ...good, tempoPhase: 'Outcome_After', baseAssetId: 'gvie/a/b' }),
     ).toBe(true);

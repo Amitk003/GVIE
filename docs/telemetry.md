@@ -16,25 +16,25 @@ schema, so a report can be built from them.
 
 ## Sectors and what we expect
 
-| Sector | Required fields |
-|---|---|
-| water | `infrastructure_category`, `operational_status`, `quantitative_unit_count`, `hazard_present`, `confidence_rating` |
-| forest | `infrastructure_category`, `canopy_cover_pct`, `sapling_count`, `ndvi_delta`, `hazard_present`, `confidence_rating` |
-| solar | `infrastructure_category`, `panel_count`, `soiling_score`, `tilt_anomaly`, `operational_status`, `confidence_rating` |
+| Sector | Required fields                                                                                                      |
+| ------ | -------------------------------------------------------------------------------------------------------------------- |
+| water  | `infrastructure_category`, `operational_status`, `quantitative_unit_count`, `hazard_present`, `confidence_rating`    |
+| forest | `infrastructure_category`, `canopy_cover_pct`, `sapling_count`, `ndvi_delta`, `hazard_present`, `confidence_rating`  |
+| solar  | `infrastructure_category`, `panel_count`, `soiling_score`, `tilt_anomaly`, `operational_status`, `confidence_rating` |
 
 Every schema sets `additionalProperties` to false, so the AI cannot add fields we
 do not know about.
 
 ## Rules that protect the data
 
-* A wrong shape never reaches Cloudinary. The worker stops at the validate step.
-* An empty answer is left empty. We never overwrite good data with a blank.
-* A 429 or a 5xx is retried. A 400 or a 401 is not, because retrying will not help.
-* The worker never sets `c2pa_valid`. Only the server seal check may do that.
-* A file becomes `Verified` only when all of these are true: the seal passed, the
+- A wrong shape never reaches Cloudinary. The worker stops at the validate step.
+- An empty answer is left empty. We never overwrite good data with a blank.
+- A 429 or a 5xx is retried. A 400 or a 401 is not, because retrying will not help.
+- The worker never sets `c2pa_valid`. Only the server seal check may do that.
+- A file becomes `Verified` only when all of these are true: the seal passed, the
   status was `Pending_AI`, confidence is 0.6 or more, clarity is 0.4 or more, and
   an after photo has a baseline link.
-* The raw answer is kept for the audit log when validation fails, so a person can
+- The raw answer is kept for the audit log when validation fails, so a person can
   see what the AI actually said.
 
 ## How to run one job by hand
@@ -48,15 +48,15 @@ one line of JSON. A non zero exit code means it stopped and wrote nothing.
 
 ## Files
 
-| File | Job |
-|---|---|
-| `src/config.ts` env keys, timeouts, attempt limit |
-| `src/sector.ts` reads the sector name, refuses unknown ones |
+| File                                                                           | Job |
+| ------------------------------------------------------------------------------ | --- |
+| `src/config.ts` env keys, timeouts, attempt limit                              |
+| `src/sector.ts` reads the sector name, refuses unknown ones                    |
 | `src/analyze-client.ts` calls Analyze API, retries only what is worth retrying |
-| `src/validate.ts` checks the answer, maps it to fields, decides the status |
-| `src/admin-client.ts` writes the clean fields back |
-| `src/worker.ts` runs one job end to end |
-| `src/index.ts` command line entry |
+| `src/validate.ts` checks the answer, maps it to fields, decides the status     |
+| `src/admin-client.ts` writes the clean fields back                             |
+| `src/worker.ts` runs one job end to end                                        |
+| `src/index.ts` command line entry                                              |
 
 ## Tests
 
@@ -68,9 +68,8 @@ spending a single credit.
 
 ## Settings you can change
 
-| Name | Default | What it does |
-|---|---|---|
-| `TELEMETRY_MAX_ATTEMPTS` | 2 | how many times we call the AI |
-| `TELEMETRY_TIMEOUT_MS` | 30000 | how long we wait for a reply |
-| `TELEMETRY_AUDIT_FOLDER` | gvie/audit | where raw answers are stored |
-
+| Name                     | Default    | What it does                  |
+| ------------------------ | ---------- | ----------------------------- |
+| `TELEMETRY_MAX_ATTEMPTS` | 2          | how many times we call the AI |
+| `TELEMETRY_TIMEOUT_MS`   | 30000      | how long we wait for a reply  |
+| `TELEMETRY_AUDIT_FOLDER` | gvie/audit | where raw answers are stored  |

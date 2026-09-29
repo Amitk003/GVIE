@@ -63,7 +63,11 @@ export async function writeMetadata(input: {
   });
 
   if (!response.ok) {
-    return { ok: false, reason: `metadata write returned ${response.status}`, status: response.status };
+    return {
+      ok: false,
+      reason: `metadata write returned ${response.status}`,
+      status: response.status,
+    };
   }
   return { ok: true };
 }

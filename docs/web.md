@@ -20,16 +20,16 @@ fails if anyone ever changes that wording.
 
 ## What the phone checks before sending
 
-* the file hash, so the same file always has the same name
-* the content manifest, so we can tell a real photo from an edited one
-* the certificate inside the manifest, and whether it has expired
-* the distance between the photo pin and the network pin, over 500 m is a warning
+- the file hash, so the same file always has the same name
+- the content manifest, so we can tell a real photo from an edited one
+- the certificate inside the manifest, and whether it has expired
+- the distance between the photo pin and the network pin, over 500 m is a warning
 
 ## What the phone does not do
 
-* it does not hold Cloudinary keys, it asks our API for a signature
-* it does not decide the status
-* it does not talk to Cloudinary Admin
+- it does not hold Cloudinary keys, it asks our API for a signature
+- it does not decide the status
+- it does not talk to Cloudinary Admin
 
 ## How to run it
 
@@ -51,20 +51,20 @@ Tests run in a fake browser made by jsdom. Nothing touches the network.
 
 ## Files
 
-| File | Job |
-|---|---|
-| `src/lib/seal.ts` read the content manifest out of the file bytes |
-| `src/lib/capture.ts` hash, seal, pin check, and the trust badge wording |
-| `src/lib/api.ts` talk to our API, turn every failure into plain words |
-| `src/components/CaptureForm.tsx` the field screen |
-| `src/components/ProjectSummary.tsx` the reviewer screen |
-| `src/components/AssetRow.tsx` one photo in the list |
-| `src/components/TrustBadge.tsx` the good, warn, red badge |
+| File                                                                       | Job |
+| -------------------------------------------------------------------------- | --- |
+| `src/lib/seal.ts` read the content manifest out of the file bytes          |
+| `src/lib/capture.ts` hash, seal, pin check, and the trust badge wording    |
+| `src/lib/api.ts` talk to our API, turn every failure into plain words      |
+| `src/components/CaptureForm.tsx` the field screen                          |
+| `src/components/ProjectSummary.tsx` the reviewer screen                    |
+| `src/components/AssetRow.tsx` one photo in the list                        |
+| `src/components/TrustBadge.tsx` the good, warn, red badge                  |
 | `src/app/page.tsx` and `src/app/projects/[proj_id]/page.tsx` the two pages |
 
 ## Settings
 
-| Name | Default | What it does |
-|---|---|---|
-| `NEXT_PUBLIC_API_BASE` | http://localhost:4000 | where our API lives |
-| `NEXT_PUBLIC_CLOUD_NAME` | demo | used to build a fallback thumbnail link |
+| Name                     | Default               | What it does                            |
+| ------------------------ | --------------------- | --------------------------------------- |
+| `NEXT_PUBLIC_API_BASE`   | http://localhost:4000 | where our API lives                     |
+| `NEXT_PUBLIC_CLOUD_NAME` | demo                  | used to build a fallback thumbnail link |

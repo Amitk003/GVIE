@@ -30,4 +30,3 @@ export function parseOrThrow<S extends ZodTypeAny>(
   }
   return parsed.data as ZodInfer<S>;
 }
-

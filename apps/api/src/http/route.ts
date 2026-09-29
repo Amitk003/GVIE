@@ -34,5 +34,3 @@ export function parseInput<S extends ZodTypeAny>(
   reply.code(400).send({ error: `bad ${target}`, details } satisfies ErrorPayload);
   return null;
 }
-
-

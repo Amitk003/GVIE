@@ -90,21 +90,31 @@ describe('request upload signature', () => {
         params: { folder: 'gvie' },
       },
     });
-    const out = await requestUploadSignature('http://localhost:4000', { proj_id: 'WATER-01' }, fetchImpl);
+    const out = await requestUploadSignature(
+      'http://localhost:4000',
+      { proj_id: 'WATER-01' },
+      fetchImpl,
+    );
     expect(out.signature).toBe('abc');
     expect(calls[0].url).toContain('/v1/uploads/sign');
     expect(calls[0].init?.method).toBe('POST');
   });
 
   it('turns an api refusal into a clear error', async () => {
-    const { fetchImpl } = stubFetch({ status: 400, json: { error: 'bad body', details: ['sha256'] } });
-    await expect(
-      requestUploadSignature('http://localhost:4000', {}, fetchImpl),
-    ).rejects.toThrow('bad body');
+    const { fetchImpl } = stubFetch({
+      status: 400,
+      json: { error: 'bad body', details: ['sha256'] },
+    });
+    await expect(requestUploadSignature('http://localhost:4000', {}, fetchImpl)).rejects.toThrow(
+      'bad body',
+    );
   });
 
   it('keeps the field list in the error', async () => {
-    const { fetchImpl } = stubFetch({ status: 400, json: { error: 'bad body', details: ['sha256'] } });
+    const { fetchImpl } = stubFetch({
+      status: 400,
+      json: { error: 'bad body', details: ['sha256'] },
+    });
     try {
       await requestUploadSignature('http://localhost:4000', {}, fetchImpl);
       expect.unreachable('should have thrown');

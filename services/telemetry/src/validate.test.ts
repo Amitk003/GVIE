@@ -120,61 +120,77 @@ describe('issue text', () => {
     const text = describeIssues([{ path: ['a', 'b'], message: 'bad' }]);
     expect(text[0]).toBe('a.b: bad');
 
-describe('map telemetry to fields', () => {
-  it('maps water facts', () => {
-    const mapped = mapTelemetryToFields({ sector: 'water', data: waterAnswer, confidence: 0.91 });
-    expect(mapped.obj_count).toBe(3);
-    expect(mapped.operational_status).toBe('Fully Operational');
-    expect(mapped.hazard_present).toBe(false);
-    expect(mapped.impact_summary).toContain('Counted 3 units');
-  });
+    describe('map telemetry to fields', () => {
+      it('maps water facts', () => {
+        const mapped = mapTelemetryToFields({
+          sector: 'water',
+          data: waterAnswer,
+          confidence: 0.91,
+        });
+        expect(mapped.obj_count).toBe(3);
+        expect(mapped.operational_status).toBe('Fully Operational');
+        expect(mapped.hazard_present).toBe(false);
+        expect(mapped.impact_summary).toContain('Counted 3 units');
+      });
 
-  it('maps forest facts', () => {
-    const mapped = mapTelemetryToFields({ sector: 'forest', data: forestAnswer, confidence: 0.8 });
-    expect(mapped.obj_count).toBe(140);
-    expect(mapped.ndvi_delta).toBe(0.22);
-    expect(mapped.impact_summary).toContain('Cover about 62 percent');
-  });
+      it('maps forest facts', () => {
+        const mapped = mapTelemetryToFields({
+          sector: 'forest',
+          data: forestAnswer,
+          confidence: 0.8,
+        });
+        expect(mapped.obj_count).toBe(140);
+        expect(mapped.ndvi_delta).toBe(0.22);
+        expect(mapped.impact_summary).toContain('Cover about 62 percent');
+      });
 
-  it('maps solar facts and the tilt warning', () => {
-    const mapped = mapTelemetryToFields({ sector: 'solar', data: solarAnswer, confidence: 0.72 });
-    expect(mapped.obj_count).toBe(24);
-    expect(mapped.impact_summary).toContain('tilt looks wrong');
-  });
+      it('maps solar facts and the tilt warning', () => {
+        const mapped = mapTelemetryToFields({
+          sector: 'solar',
+          data: solarAnswer,
+          confidence: 0.72,
+        });
+        expect(mapped.obj_count).toBe(24);
+        expect(mapped.impact_summary).toContain('tilt looks wrong');
+      });
 
-  it('mentions a hazard', () => {
-    const mapped = mapTelemetryToFields({
-      sector: 'water',
-      data: { ...waterAnswer, hazard_present: true },
-      confidence: 0.9,
+      it('mentions a hazard', () => {
+        const mapped = mapTelemetryToFields({
+          sector: 'water',
+          data: { ...waterAnswer, hazard_present: true },
+          confidence: 0.9,
+        });
+        expect(mapped.impact_summary).toContain('hazard');
+      });
+
+      it('leaves unknown numbers empty instead of guessing', () => {
+        const mapped = mapTelemetryToFields({ sector: 'water', data: {}, confidence: 0 });
+        expect(mapped.obj_count).toBeNull();
+        expect(mapped.ndvi_delta).toBeNull();
+      });
+
+      it('keeps the summary under the field limit', () => {
+        const mapped = mapTelemetryToFields({
+          sector: 'solar',
+          data: solarAnswer,
+          confidence: 0.7,
+        });
+        expect(mapped.impact_summary.length).toBeLessThanOrEqual(1000);
+      });
     });
-    expect(mapped.impact_summary).toContain('hazard');
-  });
 
-  it('leaves unknown numbers empty instead of guessing', () => {
-    const mapped = mapTelemetryToFields({ sector: 'water', data: {}, confidence: 0 });
-    expect(mapped.obj_count).toBeNull();
-    expect(mapped.ndvi_delta).toBeNull();
-  });
+    describe('next status', () => {
+      it('promotes when allowed', () => {
+        expect(nextVeriStatus({ current: 'Pending_AI', canPromote: true })).toBe('Verified');
+      });
 
-  it('keeps the summary under the field limit', () => {
-    const mapped = mapTelemetryToFields({ sector: 'solar', data: solarAnswer, confidence: 0.7 });
-    expect(mapped.impact_summary.length).toBeLessThanOrEqual(1000);
-  });
-});
-
-describe('next status', () => {
-  it('promotes when allowed', () => {
-    expect(nextVeriStatus({ current: 'Pending_AI', canPromote: true })).toBe('Verified');
-  });
-
-  it('keeps the current status otherwise', () => {
-    expect(nextVeriStatus({ current: 'Pending_AI', canPromote: false })).toBe('Pending_AI');
-    expect(nextVeriStatus({ current: 'Flagged_Location', canPromote: false })).toBe(
-      'Flagged_Location',
-    );
-  });
-});
+      it('keeps the current status otherwise', () => {
+        expect(nextVeriStatus({ current: 'Pending_AI', canPromote: false })).toBe('Pending_AI');
+        expect(nextVeriStatus({ current: 'Flagged_Location', canPromote: false })).toBe(
+          'Flagged_Location',
+        );
+      });
+    });
   });
 
   it('copes with an unknown shape', () => {

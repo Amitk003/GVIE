@@ -2,5 +2,16 @@ node_modules
 dist
 build
 coverage
+.next
 *.tsbuildinfo
 .turbo
+
+# Local only, never pushed
+memory
+PRODUCTION_ROADMAP.md
+*.pdf
+
+# Generated
+package-lock.json
+next-env.d.ts
+

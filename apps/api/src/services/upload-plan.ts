@@ -59,7 +59,10 @@ export function buildUploadPlan(input: {
 }): UploadPlan {
   const { config, payload } = input;
   const now = input.now ?? new Date();
-  const stamp = now.toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
+  const stamp = now
+    .toISOString()
+    .replace(/[-:TZ.]/g, '')
+    .slice(0, 14);
   const baseId = payload.base_asset_id ? `_base` : '';
   const publicId =
     payload.public_id ??

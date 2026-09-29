@@ -34,6 +34,9 @@ export function requireWebhookSecret(config: ApiConfig): string {
   return secret;
 }
 
-export function assetFolder(config: Pick<ApiConfig, 'CLOUDINARY_FOLDER_ROOT'>, projectId: string): string {
+export function assetFolder(
+  config: Pick<ApiConfig, 'CLOUDINARY_FOLDER_ROOT'>,
+  projectId: string,
+): string {
   return `${config.CLOUDINARY_FOLDER_ROOT}/${projectId}`;
 }

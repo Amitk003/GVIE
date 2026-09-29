@@ -118,12 +118,9 @@ export function parseGeoCoords(text: string | null): { lat: number; long: number
   return { lat, long };
 }
 
-export function planJobsFromEvent(event: ParsedUploadEvent): (
-  | 'baseline_lookup'
-  | 'align'
-  | 'telemetry'
-  | 'index'
-)[] {
+export function planJobsFromEvent(
+  event: ParsedUploadEvent,
+): ('baseline_lookup' | 'align' | 'telemetry' | 'index')[] {
   if (event.resourceType !== 'image') return ['index'];
   if (event.metadata.tempo_phase === 'Outcome_After') {
     return ['baseline_lookup', 'align', 'telemetry', 'index'];

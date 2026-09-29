@@ -45,9 +45,9 @@ from the client check), `sha256` (64 hex characters). Optional:
 
 Two rules you should know:
 
-* `c2pa_valid` is always `false` in this reply. The client only reads the seal,
+- `c2pa_valid` is always `false` in this reply. The client only reads the seal,
   so the server must check the manifest itself before it can say true.
-* If the client says the seal is broken, the answer is `Failed_C2PA` right away.
+- If the client says the seal is broken, the answer is `Failed_C2PA` right away.
 
 Bad input gives `400` with the field name in `details`.
 
@@ -62,13 +62,16 @@ We read two headers: `x-cld-timestamp` and `x-cld-signature`. The signature is
 `HMAC-SHA256(timestamp + "." + rawBody, CLOUDINARY_WEBHOOK_SECRET)`.
 
 ```json
-{ "accepted": true, "publicId": "gvie/WATER-01/after_1",
-  "jobs": ["baseline_lookup", "align", "telemetry", "index"] }
+{
+  "accepted": true,
+  "publicId": "gvie/WATER-01/after_1",
+  "jobs": ["baseline_lookup", "align", "telemetry", "index"]
+}
 ```
 
-* `Outcome_After` photos get all four jobs.
-* `Baseline_Before` photos get `telemetry` and `index` only.
-* Video gets `index` only.
+- `Outcome_After` photos get all four jobs.
+- `Baseline_Before` photos get `telemetry` and `index` only.
+- Video gets `index` only.
 
 `401` for a bad signature. `400` for a body without a public id. If
 `CLOUDINARY_WEBHOOK_SECRET` is not set the route fails closed and returns `500`,
@@ -100,12 +103,18 @@ The reply shows the exact call we will make to Cloudinary, so you can see the
 schema that the AI must obey.
 
 ```json
-{ "accepted": true, "sector": "water",
+{
+  "accepted": true,
+  "sector": "water",
   "request": {
     "url": "https://api.cloudinary.com/v2/analysis/impact-cloud/analyze/ai_vision_tagging",
-    "body": { "source": { "uri": "..." }, "prompts": ["..."],
-              "json_schema": { "required": ["operational_status", "..."],
-                               "additionalProperties": false } } } }
+    "body": {
+      "source": { "uri": "..." },
+      "prompts": ["..."],
+      "json_schema": { "required": ["operational_status", "..."], "additionalProperties": false }
+    }
+  }
+}
 ```
 
 `400` for an unknown sector. `502` when Cloudinary refuses the call.
@@ -122,12 +131,26 @@ The answer is a manifest with a small image link, a before and after link for
 every asset that has an aligned copy, and a reel link when video scenes are given.
 
 ```json
-{ "manifest": { "title": "Water done", "place": "Block A", "assetCount": 1,
-  "assets": [ { "publicId": "...", "thumbUrl": "...", "compareUrl": "...",
-                "sha256": "aaaa...", "veri_status": "Verified",
-                "objCount": 3, "ndviDelta": null } ],
-  "reelUrl": "https://res.cloudinary.com/...fl_splice...",
-  "generatedAt": "2026-09-29T10:20:30.000Z" } }
+{
+  "manifest": {
+    "title": "Water done",
+    "place": "Block A",
+    "assetCount": 1,
+    "assets": [
+      {
+        "publicId": "...",
+        "thumbUrl": "...",
+        "compareUrl": "...",
+        "sha256": "aaaa...",
+        "veri_status": "Verified",
+        "objCount": 3,
+        "ndviDelta": null
+      }
+    ],
+    "reelUrl": "https://res.cloudinary.com/...fl_splice...",
+    "generatedAt": "2026-09-29T10:20:30.000Z"
+  }
+}
 ```
 
 ## Jobs we put on the queue
@@ -135,4 +158,3 @@ every asset that has an aligned copy, and a reel link when video scenes are give
 `baseline_lookup` find the before photo near this place, `align` warp the new
 photo to it, `telemetry` read numbers with the fixed schema, `index` refresh
 search.
-

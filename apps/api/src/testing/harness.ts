@@ -58,7 +58,11 @@ export function signWebhookBody(raw: string): Record<string, string> {
   const signature = createHmac('sha256', WEBHOOK_SECRET)
     .update(`${timestamp}.${raw}`)
     .digest('hex');
-  return { 'content-type': 'application/json', 'x-cld-timestamp': timestamp, 'x-cld-signature': signature };
+  return {
+    'content-type': 'application/json',
+    'x-cld-timestamp': timestamp,
+    'x-cld-signature': signature,
+  };
 }
 
 export function webhookSample(): Record<string, unknown> {

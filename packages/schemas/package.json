@@ -8,14 +8,15 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "lint": "eslint src --max-warnings 0",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "metadata:apply": "tsx src/admin/cli.ts"
   },
   "dependencies": {
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"
   }
 }
-

@@ -147,7 +147,9 @@ describe('nothing bad is ever written', () => {
   });
 
   it('stops at validate when the answer is junk', async () => {
-    const { fetchImpl, calls } = fakeFetch([{ status: 200, json: { data: { text: 'looks good' } } }]);
+    const { fetchImpl, calls } = fakeFetch([
+      { status: 200, json: { data: { text: 'looks good' } } },
+    ]);
     const result = await runJob(waterJob, { config: testConfig, fetchImpl });
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.stage).toBe('validate');

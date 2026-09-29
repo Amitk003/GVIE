@@ -12,7 +12,9 @@ export function signUploadParams(
   apiSecret: string,
 ): string {
   const text = toSignString(params);
-  return createHash('sha1').update(text + apiSecret).digest('hex');
+  return createHash('sha1')
+    .update(text + apiSecret)
+    .digest('hex');
 }
 
 export function buildSignedUploadFields(input: {

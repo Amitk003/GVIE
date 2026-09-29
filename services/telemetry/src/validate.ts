@@ -143,7 +143,16 @@ export function mapTelemetryToFields(input: {
     operational_status: status,
     hazard_present: hazard,
     confidence: input.confidence,
-    impact_summary: buildSummary({ sector: input.sector, status, objCount, ndvi, canopy, soiling, tilt, hazard }),
+    impact_summary: buildSummary({
+      sector: input.sector,
+      status,
+      objCount,
+      ndvi,
+      canopy,
+      soiling,
+      tilt,
+      hazard,
+    }),
   };
 }
 
@@ -169,10 +178,7 @@ function buildSummary(parts: {
   return sentences.join(' ').slice(0, 1000);
 }
 
-export function nextVeriStatus(input: {
-  current: VeriStatus;
-  canPromote: boolean;
-}): VeriStatus {
+export function nextVeriStatus(input: { current: VeriStatus; canPromote: boolean }): VeriStatus {
   if (input.canPromote) return 'Verified';
   return input.current;
 }

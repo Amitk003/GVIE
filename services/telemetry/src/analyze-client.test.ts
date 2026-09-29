@@ -32,7 +32,9 @@ describe('analyze body', () => {
     const body = buildAnalyzeBody({ sector: 'water', imageUrl: 'https://x.test/a.jpg' });
     expect(body.source).toEqual({ uri: 'https://x.test/a.jpg' });
     expect(Array.isArray(body.prompts)).toBe(true);
-    expect((body.json_schema as { additionalProperties: boolean }).additionalProperties).toBe(false);
+    expect((body.json_schema as { additionalProperties: boolean }).additionalProperties).toBe(
+      false,
+    );
   });
 
   it('adds an extra instruction when asked', () => {
@@ -85,10 +87,7 @@ describe('analyze call', () => {
   });
 
   it('retries a busy server then succeeds', async () => {
-    const { fetchImpl, calls } = fakeFetch([
-      { status: 429 },
-      { json: goodWaterAnswer },
-    ]);
+    const { fetchImpl, calls } = fakeFetch([{ status: 429 }, { json: goodWaterAnswer }]);
     const result = await callAnalyze({
       config: testConfig,
       publicId: 'gvie/a/b',

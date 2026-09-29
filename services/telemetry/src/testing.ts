@@ -34,9 +34,10 @@ export type FakeResponse = {
   throws?: string;
 };
 
-export function fakeFetch(
-  replies: FakeResponse[] | FakeResponse,
-): { fetchImpl: typeof fetch; calls: FakeCall[] } {
+export function fakeFetch(replies: FakeResponse[] | FakeResponse): {
+  fetchImpl: typeof fetch;
+  calls: FakeCall[];
+} {
   const queue = Array.isArray(replies) ? [...replies] : [replies];
   const calls: FakeCall[] = [];
 

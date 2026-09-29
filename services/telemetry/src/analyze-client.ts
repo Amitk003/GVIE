@@ -42,16 +42,16 @@ export async function callAnalyze(input: AnalyzeCallInput): Promise<AnalyzeResul
   let lastReason = 'no attempt was made';
 
   for (let attempt = 1; attempt <= config.TELEMETRY_MAX_ATTEMPTS; attempt += 1) {
-    const body = buildAnalyzeBody({ sector, imageUrl: assetUrl(config.CLOUDINARY_CLOUD_NAME, publicId) });
+    const body = buildAnalyzeBody({
+      sector,
+      imageUrl: assetUrl(config.CLOUDINARY_CLOUD_NAME, publicId),
+    });
     try {
       const response = await doFetch(url, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          authorization: basicAuthHeader(
-            config.CLOUDINARY_API_KEY,
-            config.CLOUDINARY_API_SECRET,
-          ),
+          authorization: basicAuthHeader(config.CLOUDINARY_API_KEY, config.CLOUDINARY_API_SECRET),
         },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(config.TELEMETRY_TIMEOUT_MS),
@@ -72,7 +72,12 @@ export async function callAnalyze(input: AnalyzeCallInput): Promise<AnalyzeResul
     }
   }
 
-  return { ok: false, reason: lastReason, status: lastStatus, attempts: config.TELEMETRY_MAX_ATTEMPTS };
+  return {
+    ok: false,
+    reason: lastReason,
+    status: lastStatus,
+    attempts: config.TELEMETRY_MAX_ATTEMPTS,
+  };
 }
 
 /**

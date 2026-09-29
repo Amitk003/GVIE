@@ -40,20 +40,17 @@ export function createCloudinaryAnalyzeRunner(
 ): (input: AnalyzeRunnerInput) => Promise<{ ok: boolean; reason?: string }> {
   return async (input) => {
     const credentials = Buffer.from(`${cloud.apiKey}:${cloud.apiSecret}`).toString('base64');
-    const response = await fetchImpl(
-      `${endpoint}/${cloud.cloudName}/analyze/ai_vision_tagging`,
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          authorization: `Basic ${credentials}`,
-        },
-        body: JSON.stringify({
-          source: { uri: input.imageUrl },
-          prompts: [`Analyze this ${input.sector} site and follow the schema.`],
-        }),
+    const response = await fetchImpl(`${endpoint}/${cloud.cloudName}/analyze/ai_vision_tagging`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Basic ${credentials}`,
       },
-    );
+      body: JSON.stringify({
+        source: { uri: input.imageUrl },
+        prompts: [`Analyze this ${input.sector} site and follow the schema.`],
+      }),
+    });
     if (!response.ok) {
       return { ok: false, reason: `analyze failed with ${response.status}` };
     }
